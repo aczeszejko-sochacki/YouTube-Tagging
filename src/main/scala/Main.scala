@@ -11,6 +11,7 @@ import akka.http.scaladsl.Http
 import main.MainFlows
 import youtube.videos.{ IdProvider, WrongPathException }
 import youtube.captions.flows.CaptionFlows
+import com.typesafe.config.{ Config, ConfigFactory }
 
 object Main extends App with CaptionFlows with MainFlows {
   implicit val actorSystem = ActorSystem()
@@ -19,10 +20,13 @@ object Main extends App with CaptionFlows with MainFlows {
   
   implicit val log = Logging(actorSystem, "YouTube-Tagging")
 
-  implicit val asyncParellism = 16
+  // Import and validate configuration
+  val config = ConfigFactory.load();
+  implicit val lang = config.getString("captionsLanguage")
+  val maxOpenRequests = config.getInt("akka.http.host-connection-pool.max-open-requests")
+  implicit val parallelism = config.getInt("parallelism")
 
-  // Language of captions
-  implicit val lang = "en"
+  require(parallelism * parallelism <= maxOpenRequests, "Wrong parellelism + max-open-requests values")
 
   try {
     println("Provide the source path (skip to set src/main/resources/exampleIds.csv)")
