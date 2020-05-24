@@ -8,16 +8,14 @@ import youtube.YouTubeCaptions
 case class YouTubeCaptionsRequest private (request: HttpRequest)
 
 object YouTubeCaptionsRequest {
-  val (captionsHost, captionsPath) = ("video.google.com", "/timedtext")
-
   def apply(captions: YouTubeCaptions): YouTubeCaptionsRequest = captions match {
     case YouTubeCaptions(id, language) =>
       YouTubeCaptionsRequest(
         HttpRequest(
           uri = Uri.from(
             scheme = "https",
-            host = captionsHost,
-            path = captionsPath,
-            queryString = Some(s"lang=$language&v=$id"))))
+            host = CaptionsHost,
+            path = CaptionsPath,
+            queryString = Some(youTubeVideoLangQuery(id, language)))))
   }
 }
