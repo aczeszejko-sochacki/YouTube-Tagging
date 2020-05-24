@@ -32,22 +32,24 @@ trait CaptionFlows extends XmlParser {
           .response
           .map(rawCaptions => YtIdCaptionsResponse(id, rawCaptions._1, rawCaptions._2))
       })
-
-      // Handle wrong responses
       .map {
-        case YtIdCaptionsResponse(id, StatusCodes.NotFound, content) => {
+        case ytResponse @ YtIdCaptionsResponse(id, StatusCodes.NotFound, content) => {
           log.error(s"Wrong video $id")
-
-          YtIdCaptionsResponse(id, StatusCodes.NotFound, content)  // Missing haskell @ :/
+          ytResponse
         }
-        case YtIdCaptionsResponse(id, StatusCodes.OK, "") => {
+        case ytResponse @ YtIdCaptionsResponse(id, StatusCodes.OK, "") => {
           log.warning(s"No captions for the video in requested language")
+          ytResponse
         }
-
+        // Expected
+        case ytResponse @ YtIdCaptionsResponse(id, StatusCodes.OK, _) => {
+          log.info(s"Correct response with captions for video $id")
+          ytResponse
+        }
         // Unexpected
-        case YtIdCaptionsResponse(id, status, content) => {
+        case ytResponse @ YtIdCaptionsResponse(id, status, content) => {
           log.warning(s"Unexpected status $status of the captions response for video $id")
-          YtIdCaptionsResponse(id, status, content)
+          ytResponse
         }
       }
 
