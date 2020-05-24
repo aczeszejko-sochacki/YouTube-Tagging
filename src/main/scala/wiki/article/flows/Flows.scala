@@ -9,6 +9,7 @@ import akka.stream.scaladsl._
 import akka.stream.ActorMaterializer
 import akka.actor.ActorSystem
 
+import main.GlobalTypes._
 import wiki.article.parsing.XmlParser
 import wiki.article.request.WikiArticleRequest
 import wiki.article.response.WikiArticleResponse
@@ -21,8 +22,8 @@ trait ArticleFlows extends XmlParser {
       actorMaterializer: ActorMaterializer,
       executionContext: ExecutionContextExecutor,
       log: LoggingAdapter,
-      asyncParallelism: Int,
-      lang: String
+      asyncParallelism: Parallelism,
+      lang: Language
     ): Flow[String, WikiArticleRaw, NotUsed] =
     Flow[String]
 

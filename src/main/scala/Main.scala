@@ -1,3 +1,5 @@
+package main
+
 import java.nio.file.Paths
 import scala.io.StdIn.readLine
 
@@ -9,6 +11,7 @@ import akka.stream.scaladsl._
 import akka.http.scaladsl.Http
 
 import main.MainFlows
+import main.GlobalTypes._
 import youtube.videos.{ IdProvider, WrongPathException }
 import youtube.captions.flows.CaptionFlows
 import com.typesafe.config.{ Config, ConfigFactory }
@@ -22,9 +25,9 @@ object Main extends App with CaptionFlows with MainFlows {
 
   // Import and validate configuration
   val config = ConfigFactory.load();
-  implicit val lang = config.getString("captionsLanguage")
+  implicit val lang: Language = config.getString("captionsLanguage")
   val maxOpenRequests = config.getInt("akka.http.host-connection-pool.max-open-requests")
-  implicit val parallelism = config.getInt("parallelism")
+  implicit val parallelism: Parallelism = config.getInt("parallelism")
 
   require(parallelism * parallelism <= maxOpenRequests, "Wrong parellelism + max-open-requests values")
 

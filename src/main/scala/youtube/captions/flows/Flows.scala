@@ -9,6 +9,7 @@ import akka.stream.ActorMaterializer
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model._
 
+import main.GlobalTypes._
 import youtube.captions.parsing.XmlParser
 import youtube.YouTubeCaptions
 import youtube.captions.request.YouTubeCaptionsRequest
@@ -20,8 +21,8 @@ trait CaptionFlows extends XmlParser {
       actorMaterializer: ActorMaterializer,
       executionContext: ExecutionContextExecutor,
       log: LoggingAdapter,
-      asyncParallelism: Int,
-      lang: String
+      asyncParallelism: Parallelism,
+      lang: Language
     ): Flow[String, YtIdCaptionsRaw, NotUsed] =
     Flow[String]
 
