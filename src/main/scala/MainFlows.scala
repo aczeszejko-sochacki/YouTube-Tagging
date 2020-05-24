@@ -29,19 +29,17 @@ trait MainFlows extends NamedEntityRecognition with ArticleFlows {
     ): Flow[YtTaggedVideo, YtVideoArticle, NotUsed] =
     Flow[YtTaggedVideo]
       .mapAsync(asyncParallelism) {
-        
-        case YtTaggedVideo(video, Some(tags)) => {
+        case YtTaggedVideo(video, List()) => {
+          log.warning(s"No tag for video ${video.id}")
+          Future(YtVideoArticle(video, List()))
+        }
+        case YtTaggedVideo(video, tags) => {
           log.info(s"Started downloading articles for video ${video.id}")
           Source(tags.toSet)
             .via(tagToArticleLinkRaw)
             .via(wikiArticleRawToParsed)
             .runWith(Sink.collection[WikiArticleParsed, List[WikiArticleParsed]])
             .map(articles => YtVideoArticle(video, articles))
-        }
-  
-        case YtTaggedVideo(video, None) => {
-          log.warning(s"No tag for video ${video.id}")
-          Future(YtVideoArticle(video, List()))
         }
       }
 

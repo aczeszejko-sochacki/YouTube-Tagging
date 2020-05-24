@@ -1,7 +1,7 @@
 package text.processing
 
 trait NamedEntityRecognition {
-  def getUnigramEntities(text: String): Option[List[String]] =
+  def getUnigramEntities(text: String): List[String] =
     text
       // Extract sentences
       .split("\\.|\\?|\\!")
@@ -22,8 +22,5 @@ trait NamedEntityRecognition {
       // Common case handled manually
       .filterNot(token => token == "I" || token == "")
 
-      .toList match {
-        case List() => None
-        case xs     => Some(xs)
-      }
+      .toList
 }
