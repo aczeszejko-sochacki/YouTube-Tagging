@@ -12,7 +12,7 @@ import akka.actor.ActorSystem
 import main.GlobalTypes._
 import wiki.article.parsing.XmlParser
 import wiki.article.request.WikiArticleRequest
-import wiki.article.response.WikiArticleResponse
+import http.responses.statuscontent.WikiArticleResponse
 
 trait ArticleFlows extends XmlParser {
   val wikipediaCoreUrl = ".wikipedia.org/wiki/"

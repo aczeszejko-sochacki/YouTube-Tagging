@@ -1,6 +1,7 @@
 package youtube.captions.flows
 
 import scala.concurrent._
+import java.net.UnknownHostException
 
 import akka.NotUsed
 import akka.event.LoggingAdapter
@@ -13,7 +14,7 @@ import main.GlobalTypes._
 import youtube.captions.parsing.XmlParser
 import youtube.YouTubeCaptions
 import youtube.captions.request.YouTubeCaptionsRequest
-import youtube.captions.response.YouTubeCaptionsResponse
+import http.responses.statuscontent.YouTubeCaptionsResponse
 
 trait CaptionFlows extends XmlParser {
   def idToYtIdCaptionsRaw(implicit
