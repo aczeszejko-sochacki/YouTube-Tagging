@@ -3,6 +3,10 @@ package text.processing
 trait NamedEntityRecognition {
   def getUnigramEntities(text: String): List[String] =
     text
+      // Fix nasty XML coding
+      .replace("\n", " ")
+      .replace("quot", " ")
+
       // Extract sentences
       .split("\\.|\\?|\\!")
       .map(_.trim.split(" "))
