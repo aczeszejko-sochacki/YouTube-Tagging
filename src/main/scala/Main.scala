@@ -31,6 +31,8 @@ object Main extends App with CaptionFlows with MainFlows {
 
   require(parallelism * parallelism <= maxOpenRequests, "Wrong parellelism + max-open-requests values")
 
+  def termination = { Http().shutdownAllConnectionPools; actorSystem.terminate }
+
   try {
     println("Provide the source path (skip to set src/main/resources/exampleIds.csv)")
     val sourcePath = readLine match {
@@ -43,26 +45,15 @@ object Main extends App with CaptionFlows with MainFlows {
     IdProvider.sourceFromPath(sourcePath)
       .via(idToYtIdCaptionsRaw)
       .via(ytCaptionsRawToParsed)
+      .map(x => { println(x.parsedCaptions); x })
       .via(ytCaptionsParsedtoTaggedVideo)
       .via(ytTaggedVideoToYtVideoArticle)
       .via(stringToJsonString)
       .map(ByteString(_))
       .runWith(FileIO.toPath(Paths.get(saveDir + destinationFilename)))
-      .foreach(_ => {
-        log.info("Successfully downloaded the entire content")
-        Http().shutdownAllConnectionPools
-        actorSystem.terminate
-      })
+      .foreach(_ => { log.info("Successfully downloaded the entire content"); termination })
   } catch {
-    case e: WrongPathException => {
-      log.error("Wrong source path. Actor system terminated.")
-      Http().shutdownAllConnectionPools
-      actorSystem.terminate
-    }
-    case e: Exception => {
-      log.error(s"Unexpected exception: ${e.printStackTrace}")
-      Http().shutdownAllConnectionPools
-      actorSystem.terminate
-    }
+    case _: WrongPathException => log.error("Wrong source path. Actor system terminated."); termination
+    case e: Exception => log.error(s"Unexpected exception"); e.printStackTrace; termination
   }
 }
