@@ -5,5 +5,5 @@ package object request {
   val ArticlePath = "/w/api.php"
   
   def wikiArticleContentQuery(token: String) =
-    s"action=query&titles=$token&prop=extracts&format=xml&exintro=1&explaintext"
+    s"action=query&titles=$token&prop=extracts&format=xml&explaintext&redirects"
 }
