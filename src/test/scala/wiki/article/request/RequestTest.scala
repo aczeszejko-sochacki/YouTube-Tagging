@@ -11,8 +11,8 @@ class WikiArticleRequestSpec extends FlatSpec {
       HttpRequest(
         uri = Uri.from(
           scheme = "https",
-          host = WikiArticleRequest.articleHost,
-          path = WikiArticleRequest.articlePath,
+          host = ArticleHost,
+          path = ArticlePath,
           queryString =  Some(s"action=query&titles=$unigram&prop=extracts&format=xml&exintro=1&explaintext")))
 
     val testReq = WikiArticleRequest(unigram)

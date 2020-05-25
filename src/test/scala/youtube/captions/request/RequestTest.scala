@@ -14,8 +14,8 @@ class YouTubeCaptionsOpsSpec extends FlatSpec {
       HttpRequest(
         uri = Uri.from(
           scheme = "https",
-          host = YouTubeCaptionsRequest.captionsHost,
-          path = YouTubeCaptionsRequest.captionsPath,
+          host = CaptionsHost,
+          path = CaptionsPath,
           queryString = Some(s"lang=$language&v=$id")))
 
     val testReq = YouTubeCaptionsRequest(captions)
