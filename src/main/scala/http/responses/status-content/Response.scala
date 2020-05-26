@@ -9,6 +9,8 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 
 class StatusContentResponse {
+  type StatusContent = (StatusCode, String)
+
   def response(request: HttpRequest)(implicit
       actorSystem: ActorSystem,
       actorMaterializer: ActorMaterializer,

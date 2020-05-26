@@ -32,10 +32,16 @@ trait ArticleFlows extends XmlParser {
         log.info(s"Started downloading article for tag $tag")
         WikiArticleResponse(WikiArticleRequest(tag))
           .response
-          .map(rawArticle => WikiArticleRawResponse(tag, rawArticle._1, rawArticle._2))
+          .map {
+            case Some(rawArticle) => WikiArticleRawResponse(tag, rawArticle._1, rawArticle._2)
+            case None => None
+          }
       })
 
-      // Handle wrong responses
+      // Filter responses failed with an error
+      .filterNot(_ == None)
+
+      // Handle wrong responses (status code not OK etc.)
       .map {
         case WikiArticleRawResponse(tag, status, _) if (status != StatusCodes.OK) => {
           log.error(s"Could not download article for tag $tag. Response status code: $status")

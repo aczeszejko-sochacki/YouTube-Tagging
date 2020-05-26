@@ -32,8 +32,16 @@ trait CaptionFlows extends XmlParser {
         log.info(s"Started downloading captions for video $id")
         YouTubeCaptionsResponse(YouTubeCaptionsRequest(YouTubeCaptions(id, lang)))
           .response
-          .map(rawCaptions => YtIdCaptionsResponse(id, rawCaptions._1, rawCaptions._2))
+          .map {
+            case Some(rawCaptions) => YtIdCaptionsResponse(id, rawCaptions._1, rawCaptions._2)
+            case None => None
+          }
       })
+
+      // Filter responses failed with an error
+      .filterNot(_ == None)
+
+      // Handle wrong responses (status code not OK etc.)
       .map {
         case ytResponse @ YtIdCaptionsResponse(id, StatusCodes.NotFound, content) => {
           log.error(s"Wrong video $id")
