@@ -21,11 +21,10 @@ object Main extends App with CaptionFlows with MainFlows {
   implicit val actorSystem = ActorSystem()
   implicit val actorMaterializer = Materializer
   implicit val context = actorSystem.dispatcher
-  
   implicit val log = Logging(actorSystem, "YouTube-Tagging")
 
   // Import and validate configuration
-  val config = ConfigFactory.load();
+  val config = ConfigFactory.load
   implicit val lang: Language = config.getString("captionsLanguage")
   val maxOpenRequests = config.getInt("akka.http.host-connection-pool.max-open-requests")
   implicit val parallelism: Parallelism = config.getInt("parallelism")

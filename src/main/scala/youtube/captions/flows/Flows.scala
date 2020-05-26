@@ -48,7 +48,7 @@ trait CaptionFlows extends XmlParser {
           ytResponse
         }
         case ytResponse @ YtIdCaptionsResponse(id, StatusCodes.OK, "") => {
-          log.warning(s"No captions for the video in requested language")
+          log.warning(s"No captions for the video $id in requested language")
           ytResponse
         }
         // Expected
