@@ -6,11 +6,11 @@ import java.lang.IllegalArgumentException
 import org.scalatest.AsyncFlatSpec
 import akka.stream.scaladsl.Sink
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 
 class IdProviderSpec extends AsyncFlatSpec {
   implicit val actorSystem = ActorSystem()
-  implicit val actorMaterializer = ActorMaterializer()
+  implicit val actorMaterializer = Materializer
 
   "Reading ids from file" should "throw WrongPathException given nonexisting file" in {
     assertThrows[WrongPathException] {

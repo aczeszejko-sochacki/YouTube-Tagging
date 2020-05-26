@@ -5,7 +5,7 @@ import scala.concurrent._
 import akka.NotUsed
 import akka.event.LoggingAdapter
 import akka.stream.scaladsl._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.actor.ActorSystem
 import net.liftweb.json._
 import net.liftweb.json.Serialization.writePretty
@@ -21,7 +21,7 @@ trait MainFlows extends NamedEntityRecognition with ArticleFlows {
 
   def ytTaggedVideoToYtVideoArticle(implicit
       actorSystem: ActorSystem,
-      actorMaterializer: ActorMaterializer,
+      actorMaterializer: Materializer,
       executionContext: ExecutionContextExecutor,
       log: LoggingAdapter,
       asyncParallelism: Int,
@@ -45,7 +45,7 @@ trait MainFlows extends NamedEntityRecognition with ArticleFlows {
 
   def ytCaptionsParsedtoTaggedVideo(implicit
       actorSystem: ActorSystem,
-      actorMaterializer: ActorMaterializer,
+      actorMaterializer: Materializer,
       executionContext: ExecutionContextExecutor
     ): Flow[YtIdCaptionsParsed, YtTaggedVideo, NotUsed] =
     Flow[YtIdCaptionsParsed]

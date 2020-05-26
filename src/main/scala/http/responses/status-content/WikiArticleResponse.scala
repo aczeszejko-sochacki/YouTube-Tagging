@@ -3,7 +3,7 @@ package http.responses.statuscontent
 import scala.concurrent._
 import java.net.UnknownHostException
 
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
@@ -16,7 +16,7 @@ case class WikiArticleResponse private (response: Future[Option[WikiArticleRespo
 object WikiArticleResponse extends StatusContentResponse {
   def apply(request: WikiArticleRequest)(implicit
       actorSystem: ActorSystem,
-      actorMaterializer: ActorMaterializer,
+      actorMaterializer: Materializer,
       executionContext: ExecutionContextExecutor,
       log: LoggingAdapter
     ): WikiArticleResponse =

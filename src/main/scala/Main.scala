@@ -7,7 +7,7 @@ import java.lang.ArrayIndexOutOfBoundsException
 import akka.event.Logging
 import akka.util.ByteString
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.scaladsl._
 import akka.http.scaladsl.Http
 
@@ -19,7 +19,7 @@ import com.typesafe.config.ConfigFactory
 
 object Main extends App with CaptionFlows with MainFlows {
   implicit val actorSystem = ActorSystem()
-  implicit val actorMaterializer = ActorMaterializer()
+  implicit val actorMaterializer = Materializer
   implicit val context = actorSystem.dispatcher
   
   implicit val log = Logging(actorSystem, "YouTube-Tagging")

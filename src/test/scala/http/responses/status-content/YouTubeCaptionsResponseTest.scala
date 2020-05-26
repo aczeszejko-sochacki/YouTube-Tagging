@@ -6,7 +6,7 @@ import scala.concurrent._
 
 import akka.http.scaladsl.model._
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.event.Logging
 
 import youtube.captions.request.YouTubeCaptionsRequest
@@ -14,7 +14,7 @@ import youtube.YouTubeCaptions
 
 class YouTubeCaptionsResponseSpec extends AsyncFlatSpec {
   implicit val actorSystem = ActorSystem()
-  implicit val actorMaterializer = ActorMaterializer()
+  implicit val actorMaterializer = Materializer
   implicit val ec = scala.concurrent.ExecutionContext.global
   implicit val log = Logging(actorSystem, "YouTube-Tagging")
 

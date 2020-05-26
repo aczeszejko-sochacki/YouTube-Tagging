@@ -3,7 +3,7 @@ package http.responses.statuscontent
 import scala.concurrent._
 import scala.language.postfixOps
 
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
@@ -13,7 +13,7 @@ class StatusContentResponse {
 
   def response(request: HttpRequest)(implicit
       actorSystem: ActorSystem,
-      actorMaterializer: ActorMaterializer,
+      actorMaterializer: Materializer,
       executionContext: ExecutionContextExecutor
     ): Future[(StatusCode, String)] = {
       val response = Http().singleRequest(request)
