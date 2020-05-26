@@ -2,7 +2,7 @@ package main
 
 import scala.concurrent.duration._
 import java.nio.file.Paths
-import scala.io.StdIn.readLine
+import java.lang.ArrayIndexOutOfBoundsException
 
 import akka.event.Logging
 import akka.util.ByteString
@@ -15,7 +15,7 @@ import main.MainFlows
 import main.GlobalTypes._
 import youtube.videos.{ IdProvider, WrongPathException }
 import youtube.captions.flows.CaptionFlows
-import com.typesafe.config.{ Config, ConfigFactory }
+import com.typesafe.config.ConfigFactory
 
 object Main extends App with CaptionFlows with MainFlows {
   implicit val actorSystem = ActorSystem()
@@ -49,7 +49,8 @@ object Main extends App with CaptionFlows with MainFlows {
       .runWith(FileIO.toPath(Paths.get(destPath)))
       .foreach(_ => { log.info("Successfully downloaded the entire content"); termination })
   } catch {
-    case _: WrongPathException => log.error("Wrong source path. Actor system terminated."); termination
-    case e: Exception => log.error(s"Unexpected exception"); e.printStackTrace; termination
+    case _: ArrayIndexOutOfBoundsException => log.error("Running needs exactly 2 arguments"); termination
+    case _: WrongPathException             => log.error("Wrong source path. Actor system terminated."); termination
+    case e: Exception                      => log.error(s"Unexpected exception"); e.printStackTrace; termination
   }
 }
