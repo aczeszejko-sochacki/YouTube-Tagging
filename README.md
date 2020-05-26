@@ -10,10 +10,10 @@ The downloading is performed concurrently thanks to Akka, whereas Akka Streams p
 The tags should be provided by a file with ids, each line consisting of exactly one id.
 
 ## Output format
-A json file consisting of separated objects for each video id. Each of them has its atributes (id, raw captions, parsed captions and list of wikipedia articles for found tags). Each article has three atributes (link to the article, raw content and parsed content). Check the output format in `src/main/resources/exampleResult.json` (generated from `src/main/resources/exampleIds.csv`)
+A json file consisting of separated objects for each video id. Each of them has its atributes (id, raw captions, parsed captions and list of wikipedia articles for found tags). Each article has three atributes (link to the article, raw content and parsed content). Example input in `src/main/resources/exampleIds.csv`)
 ## Commands
 1. `sbt` to load the project
-2. Having loaded sbt, `run` to run the tagging. You will be asked to type source path (default set to `src/main/resources/exampleIds.csv`) and destination filename (which will be placed in `src/main/resources/`).
+2. Having loaded sbt, `run sourcePath destPath` to run the tagging. 
 or `test` to invoke the tests
 
 # Code overview
